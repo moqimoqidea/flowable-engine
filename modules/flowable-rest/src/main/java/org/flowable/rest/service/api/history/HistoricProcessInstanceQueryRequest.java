@@ -35,13 +35,25 @@ public class HistoricProcessInstanceQueryRequest extends PaginateRequest {
     private String processInstanceNameLikeIgnoreCase;
     private String processBusinessKey;
     private String processBusinessKeyLike;
+    private String processBusinessKeyLikeIgnoreCase;
+    private String processBusinessStatus;
+    private String processBusinessStatusLike;
+    private String processBusinessStatusLikeIgnoreCase;
     private String processDefinitionId;
     private String processDefinitionKey;
+    private String processDefinitionKeyLike;
+    private String processDefinitionKeyLikeIgnoreCase;
+    private List<String> processDefinitionKeys;
+    private List<String> excludeProcessDefinitionKeys;
     private List<String> processDefinitionKeyIn;
     private List<String> processDefinitionKeyNotIn;
     private String processDefinitionName;
+    private String processDefinitionNameLike;
+    private String processDefinitionNameLikeIgnoreCase;
     private Integer processDefinitionVersion;
     private String processDefinitionCategory;
+    private String processDefinitionCategoryLike;
+    private String processDefinitionCategoryLikeIgnoreCase;
     private String deploymentId;
     private List<String> deploymentIdIn;
     private String superProcessInstanceId;
@@ -62,6 +74,7 @@ public class HistoricProcessInstanceQueryRequest extends PaginateRequest {
     private Boolean withoutCallbackId;
     private String tenantId;
     private String tenantIdLike;
+    private String tenantIdLikeIgnoreCase;
     private Boolean withoutTenantId;
     private String rootScopeId;
     private String parentScopeId;
@@ -121,6 +134,38 @@ public class HistoricProcessInstanceQueryRequest extends PaginateRequest {
     public void setProcessBusinessKeyLike(String processBusinessKeyLike) {
         this.processBusinessKeyLike = processBusinessKeyLike;
     }
+    
+    public String getProcessBusinessKeyLikeIgnoreCase() {
+        return processBusinessKeyLikeIgnoreCase;
+    }
+
+    public void setProcessBusinessKeyLikeIgnoreCase(String processBusinessKeyLikeIgnoreCase) {
+        this.processBusinessKeyLikeIgnoreCase = processBusinessKeyLikeIgnoreCase;
+    }
+
+    public String getProcessBusinessStatus() {
+        return processBusinessStatus;
+    }
+
+    public void setProcessBusinessStatus(String processBusinessStatus) {
+        this.processBusinessStatus = processBusinessStatus;
+    }
+
+    public String getProcessBusinessStatusLike() {
+        return processBusinessStatusLike;
+    }
+
+    public void setProcessBusinessStatusLike(String processBusinessStatusLike) {
+        this.processBusinessStatusLike = processBusinessStatusLike;
+    }
+
+    public String getProcessBusinessStatusLikeIgnoreCase() {
+        return processBusinessStatusLikeIgnoreCase;
+    }
+
+    public void setProcessBusinessStatusLikeIgnoreCase(String processBusinessStatusLikeIgnoreCase) {
+        this.processBusinessStatusLikeIgnoreCase = processBusinessStatusLikeIgnoreCase;
+    }
 
     public String getProcessDefinitionId() {
         return processDefinitionId;
@@ -136,6 +181,22 @@ public class HistoricProcessInstanceQueryRequest extends PaginateRequest {
 
     public void setProcessDefinitionKey(String processDefinitionKey) {
         this.processDefinitionKey = processDefinitionKey;
+    }
+
+    public List<String> getProcessDefinitionKeys() {
+        return processDefinitionKeys;
+    }
+
+    public void setProcessDefinitionKeys(List<String> processDefinitionKeys) {
+        this.processDefinitionKeys = processDefinitionKeys;
+    }
+
+    public List<String> getExcludeProcessDefinitionKeys() {
+        return excludeProcessDefinitionKeys;
+    }
+
+    public void setExcludeProcessDefinitionKeys(List<String> excludeProcessDefinitionKeys) {
+        this.excludeProcessDefinitionKeys = excludeProcessDefinitionKeys;
     }
 
     public List<String> getProcessDefinitionKeyIn() {
@@ -160,6 +221,54 @@ public class HistoricProcessInstanceQueryRequest extends PaginateRequest {
 
     public void setProcessDefinitionName(String processDefinitionName) {
         this.processDefinitionName = processDefinitionName;
+    }
+    
+    public String getProcessDefinitionKeyLike() {
+        return processDefinitionKeyLike;
+    }
+
+    public void setProcessDefinitionKeyLike(String processDefinitionKeyLike) {
+        this.processDefinitionKeyLike = processDefinitionKeyLike;
+    }
+
+    public String getProcessDefinitionKeyLikeIgnoreCase() {
+        return processDefinitionKeyLikeIgnoreCase;
+    }
+
+    public void setProcessDefinitionKeyLikeIgnoreCase(String processDefinitionKeyLikeIgnoreCase) {
+        this.processDefinitionKeyLikeIgnoreCase = processDefinitionKeyLikeIgnoreCase;
+    }
+
+    public String getProcessDefinitionNameLike() {
+        return processDefinitionNameLike;
+    }
+
+    public void setProcessDefinitionNameLike(String processDefinitionNameLike) {
+        this.processDefinitionNameLike = processDefinitionNameLike;
+    }
+
+    public String getProcessDefinitionNameLikeIgnoreCase() {
+        return processDefinitionNameLikeIgnoreCase;
+    }
+
+    public void setProcessDefinitionNameLikeIgnoreCase(String processDefinitionNameLikeIgnoreCase) {
+        this.processDefinitionNameLikeIgnoreCase = processDefinitionNameLikeIgnoreCase;
+    }
+
+    public String getProcessDefinitionCategoryLike() {
+        return processDefinitionCategoryLike;
+    }
+
+    public void setProcessDefinitionCategoryLike(String processDefinitionCategoryLike) {
+        this.processDefinitionCategoryLike = processDefinitionCategoryLike;
+    }
+
+    public String getProcessDefinitionCategoryLikeIgnoreCase() {
+        return processDefinitionCategoryLikeIgnoreCase;
+    }
+
+    public void setProcessDefinitionCategoryLikeIgnoreCase(String processDefinitionCategoryLikeIgnoreCase) {
+        this.processDefinitionCategoryLikeIgnoreCase = processDefinitionCategoryLikeIgnoreCase;
     }
 
     public Integer getProcessDefinitionVersion() {
@@ -337,6 +446,14 @@ public class HistoricProcessInstanceQueryRequest extends PaginateRequest {
 
     public void setTenantIdLike(String tenantIdLike) {
         this.tenantIdLike = tenantIdLike;
+    }
+    
+    public String getTenantIdLikeIgnoreCase() {
+        return tenantIdLikeIgnoreCase;
+    }
+
+    public void setTenantIdLikeIgnoreCase(String tenantIdLikeIgnoreCase) {
+        this.tenantIdLikeIgnoreCase = tenantIdLikeIgnoreCase;
     }
 
     public Boolean getWithoutTenantId() {

@@ -343,4 +343,160 @@ public class ProcessInstanceQueryResourceTest extends BaseSpringRestTestCase {
                 + "} ]"
                 + "}");
     }
+
+    @Test
+    @Deployment(resources = { "org/flowable/rest/service/api/twoTaskProcess.bpmn20.xml" })
+    public void testQueryProcessInstancesByBusinessKey() throws Exception {
+        runtimeService.startProcessInstanceByKey("oneTaskProcess", "businessKey3");
+        runtimeService.startProcessInstanceByKey("oneTaskProcess", "businessKey1");
+        runtimeService.startProcessInstanceByKey("oneTaskProcess", "businessKey2");
+
+        ObjectNode requestNode = objectMapper.createObjectNode();
+        requestNode.put("order", "asc");
+        requestNode.put("sort", "businessKey");
+
+        String url = RestUrls.createRelativeResourceUrl(RestUrls.URL_PROCESS_INSTANCE_QUERY);
+        HttpPost httpPost = new HttpPost(SERVER_URL_PREFIX + url);
+        httpPost.setEntity(new StringEntity(requestNode.toString()));
+        CloseableHttpResponse response = executeRequest(httpPost, HttpStatus.SC_OK);
+
+        JsonNode rootNode = objectMapper.readTree(response.getEntity().getContent());
+        closeResponse(response);
+        assertThatJson(rootNode)
+                .when(Option.IGNORING_EXTRA_FIELDS)
+                .isEqualTo("{"
+                        + "data: [ "
+                        + " {"
+                        + "   businessKey: 'businessKey1'"
+                        + " }, "
+                        + " {"
+                        + "   businessKey: 'businessKey2'"
+                        + " }, "
+                        + " {"
+                        + "   businessKey: 'businessKey3'"
+                        + " } "
+                        + "]"
+                        + "}");
+
+        requestNode.put("order", "desc");
+
+        url = RestUrls.createRelativeResourceUrl(RestUrls.URL_PROCESS_INSTANCE_QUERY);
+        httpPost = new HttpPost(SERVER_URL_PREFIX + url);
+        httpPost.setEntity(new StringEntity(requestNode.toString()));
+        response = executeRequest(httpPost, HttpStatus.SC_OK);
+
+        rootNode = objectMapper.readTree(response.getEntity().getContent());
+        closeResponse(response);
+        assertThatJson(rootNode)
+                .when(Option.IGNORING_EXTRA_FIELDS)
+                .isEqualTo("{"
+                        + "data: [ "
+                        + " {"
+                        + "   businessKey: 'businessKey3'"
+                        + " }, "
+                        + " {"
+                        + "   businessKey: 'businessKey2'"
+                        + " }, "
+                        + " {"
+                        + "   businessKey: 'businessKey1'"
+                        + " } "
+                        + "]"
+                        + "}");
+    }
+    
+    @Test
+    @Deployment(resources = { "org/flowable/rest/service/api/twoTaskProcess.bpmn20.xml" })
+    public void testQueryProcessInstancesByProcessDefinitionKeys() throws Exception {
+        ProcessInstance instance1 = runtimeService.startProcessInstanceByKey("oneTaskProcess");
+        ProcessInstance instance2 = runtimeService.startProcessInstanceByKey("oneTaskProcess");
+
+        ObjectNode requestNode = objectMapper.createObjectNode();
+        ArrayNode keyArray = requestNode.putArray("processDefinitionKeys");
+        keyArray.add("oneTaskProcess");
+
+        String url = RestUrls.createRelativeResourceUrl(RestUrls.URL_PROCESS_INSTANCE_QUERY);
+        HttpPost httpPost = new HttpPost(SERVER_URL_PREFIX + url);
+        httpPost.setEntity(new StringEntity(requestNode.toString()));
+        CloseableHttpResponse response = executeRequest(httpPost, HttpStatus.SC_OK);
+
+        JsonNode rootNode = objectMapper.readTree(response.getEntity().getContent());
+        closeResponse(response);
+        assertThatJson(rootNode)
+                .when(Option.IGNORING_EXTRA_FIELDS)
+                .when(Option.IGNORING_ARRAY_ORDER)
+                .isEqualTo("{"
+                        + "data: [ "
+                        + " {"
+                        + "   id: '" + instance1.getId() + "'"
+                        + " }, "
+                        + " {"
+                        + "   id: '" + instance2.getId() + "'"
+                        + " }"
+                        + "]"
+                        + "}");
+
+        keyArray.removeAll();
+        keyArray.add("undefined");
+
+        url = RestUrls.createRelativeResourceUrl(RestUrls.URL_PROCESS_INSTANCE_QUERY);
+        httpPost = new HttpPost(SERVER_URL_PREFIX + url);
+        httpPost.setEntity(new StringEntity(requestNode.toString()));
+        response = executeRequest(httpPost, HttpStatus.SC_OK);
+
+        rootNode = objectMapper.readTree(response.getEntity().getContent());
+        closeResponse(response);
+        assertThatJson(rootNode)
+                .when(Option.IGNORING_EXTRA_FIELDS)
+                .isEqualTo("{"
+                        + "data: [ ]"
+                        + "}");
+    }
+    
+    @Test
+    @Deployment(resources = { "org/flowable/rest/service/api/twoTaskProcess.bpmn20.xml" })
+    public void testQueryProcessInstancesByExcludeProcessDefinitionKeys() throws Exception {
+        ProcessInstance instance1 = runtimeService.startProcessInstanceByKey("oneTaskProcess");
+        ProcessInstance instance2 = runtimeService.startProcessInstanceByKey("oneTaskProcess");
+
+        ObjectNode requestNode = objectMapper.createObjectNode();
+        ArrayNode keyArray = requestNode.putArray("excludeProcessDefinitionKeys");
+        keyArray.add("oneTaskProcess");
+        
+        String url = RestUrls.createRelativeResourceUrl(RestUrls.URL_PROCESS_INSTANCE_QUERY);
+        HttpPost httpPost = new HttpPost(SERVER_URL_PREFIX + url);
+        httpPost.setEntity(new StringEntity(requestNode.toString()));
+        CloseableHttpResponse response = executeRequest(httpPost, HttpStatus.SC_OK);
+
+        JsonNode rootNode = objectMapper.readTree(response.getEntity().getContent());
+        closeResponse(response);
+        assertThatJson(rootNode)
+                .when(Option.IGNORING_EXTRA_FIELDS)
+                .isEqualTo("{"
+                        + "data: [ ]"
+                        + "}");
+        
+        keyArray.removeAll();
+        keyArray.add("undefined");
+
+        url = RestUrls.createRelativeResourceUrl(RestUrls.URL_PROCESS_INSTANCE_QUERY);
+        httpPost = new HttpPost(SERVER_URL_PREFIX + url);
+        httpPost.setEntity(new StringEntity(requestNode.toString()));
+        response = executeRequest(httpPost, HttpStatus.SC_OK);
+
+        rootNode = objectMapper.readTree(response.getEntity().getContent());
+        closeResponse(response);
+        assertThatJson(rootNode)
+                .when(Option.IGNORING_EXTRA_FIELDS)
+                .when(Option.IGNORING_ARRAY_ORDER)
+                .isEqualTo("{"
+                        + "data: [ "
+                        + " {"
+                        + "   id: '" + instance1.getId() + "'"
+                        + " }, "
+                        + " {"
+                        + "   id: '" + instance2.getId() + "'"
+                        + " }"
+                        + "]"
+                        + "}");
+    }
 }
